@@ -1,7 +1,10 @@
-package com.todolist;
+package com.todolist.api;
 
-import com.todolist.domain.Member;
-import com.todolist.service.MemberServiceCustom;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import com.todolist.api.service.MemberServiceCustom;
+import com.todolist.common.domain.Member;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,13 +14,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import lombok.extern.slf4j.Slf4j;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 @Slf4j
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = ModuleApiApplication.class)
-public class ModuleApiApplicationTests {
+@SpringBootTest
+public class TodoListApiApplicationTests {
 
 	@Autowired
 	private MemberServiceCustom memberServiceCustom;

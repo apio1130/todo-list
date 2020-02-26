@@ -1,9 +1,9 @@
-package com.todolist.repository;
+package com.todolist.common.repository;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.todolist.domain.Member;
+import com.todolist.common.domain.Member;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

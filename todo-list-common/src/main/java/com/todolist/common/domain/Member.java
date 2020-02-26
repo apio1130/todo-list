@@ -1,4 +1,4 @@
-package com.todolist.domain;
+package com.todolist.common.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

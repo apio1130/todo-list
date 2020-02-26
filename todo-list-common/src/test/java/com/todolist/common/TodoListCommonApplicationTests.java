@@ -1,8 +1,8 @@
-package com.todolist;
+package com.todolist.common;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ModuleCommonApplicationTests {
+public class TodoListCommonApplicationTests {
 	public void contextLoads() {}
 }

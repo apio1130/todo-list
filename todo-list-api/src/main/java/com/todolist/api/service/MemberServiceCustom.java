@@ -1,7 +1,7 @@
-package com.todolist.service;
+package com.todolist.api.service;
 
-import com.todolist.domain.Member;
-import com.todolist.repository.MemberRepository;
+import com.todolist.common.domain.Member;
+import com.todolist.common.repository.MemberRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

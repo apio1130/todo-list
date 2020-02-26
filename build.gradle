@@ -42,7 +42,10 @@ subprojects {
             }
         }
     }
-
+    
+    test {
+        useJUnitPlatform()
+    }
 }
 
 project(':todo-list-api') {
