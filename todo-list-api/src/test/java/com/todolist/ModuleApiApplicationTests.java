@@ -24,7 +24,7 @@ public class ModuleApiApplicationTests {
 
 	@Test
 	public void save() {
-		Member member = new Member("kjkim", "kjkim@test.com");
+		Member member = new Member("kjkim", "test@email.com");
 		Long id = memberServiceCustom.signup(member);
 		log.info("saved Member : {}", member.getName());	
 		assertThat(id, is(1L));

@@ -27,7 +27,7 @@ public class MemberRepositoryTest {
     public void add () {
         memberRepository.save(new Member("kjkim", "test@email.com"));
         Member saved = memberRepository.findById(1L).orElse(new Member());
-        log.info("saved Member Info : {}", saved.toString());
+        log.info("saved Member Info : {}", saved.getName());
         assertThat(saved.getName(), is("kjkim"));
     }
 }
