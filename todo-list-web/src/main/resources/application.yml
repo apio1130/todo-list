@@ -1,0 +1,25 @@
+spring:
+  profiles: 
+    active: local
+---
+spring:
+  profiles: local
+server:
+    port: 9000
+logging:
+  level:
+    com.todolist: debug
+
+---
+spring:
+  profiles: test
+logging:
+  level:
+    com.todolist: info
+
+---
+spring:
+  profiles: prd
+logging:
+  level:
+    com.todolist: info

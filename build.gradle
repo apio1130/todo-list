@@ -59,16 +59,28 @@ project(':todo-list-web') {
     apply plugin: "com.moowork.node"
 
     node {
-        version = '10.15.0'
-        npmVersion = '6.4.1'
+        version = '12.11.1'
+        npmVersion = '6.13.4'
         download = false
+        workDir = file("./src/front")
+        npmWorkDir = file("./src/front")
+        nodeModulesDir = file("./src/front")
     }
 
-    task webpack(type: NpmTask, dependsOn: 'npmInstall') {
+    task setUp(type: NpmTask) {
+        description = "Install Node.js package"
+        args = ['install']
+        inputs.files file('package.json')
+        outputs.files file('node_modules')
+    }
+
+    task buildFront(type: NpmTask, dependsOn: setUp) {
+        description = "Build vue.js"
         args = ['run', 'build']
     }
 
-    processResources.dependsOn 'webpack'
+    processResources.dependsOn 'buildFront'
+
 
 	dependencies {
 		implementation project(':todo-list-common')
