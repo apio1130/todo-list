@@ -28,7 +28,6 @@ subprojects {
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
-
     }
 
     task initSourceFolders {
@@ -62,8 +61,8 @@ project(':todo-list-web') {
         version = '12.11.1'
         npmVersion = '6.13.4'
         download = false
-        workDir = file("./src/front")
-        npmWorkDir = file("./src/front")
+        // workDir = file("./src/front")
+        // npmWorkDir = file("./src/front")
         nodeModulesDir = file("./src/front")
     }
 
@@ -80,7 +79,6 @@ project(':todo-list-web') {
     }
 
     processResources.dependsOn 'buildFront'
-
 
 	dependencies {
 		implementation project(':todo-list-common')
