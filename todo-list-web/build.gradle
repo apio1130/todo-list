@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':todo-list-common')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
+}
