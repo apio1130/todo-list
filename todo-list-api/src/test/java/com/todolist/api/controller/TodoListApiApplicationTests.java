@@ -1,4 +1,4 @@
-package com.todolist.api;
+package com.todolist.api.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

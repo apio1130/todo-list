@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EntityScan(basePackages = { "com.todolist" })
 @EnableJpaRepositories(basePackages = { "com.todolist" })
-public class RepositoryConfiguration {
+public class RepositoryConfig {
 
 }
