@@ -1,4 +1,4 @@
-package com.todolist.api.config;
+package com.todolist.web.config;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;

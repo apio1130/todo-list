@@ -1,5 +1,4 @@
 rootProject.name = 'todo-list'
 
 include 'todo-list-common'
-include 'todo-list-api'
 include 'todo-list-web'
