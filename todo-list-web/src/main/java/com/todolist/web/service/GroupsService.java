@@ -1,4 +1,4 @@
-package com.todolist.api.service;
+package com.todolist.web.service;
 
 import com.todolist.common.repository.GroupsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
