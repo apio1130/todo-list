@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @Entity
 public class SubTask {
     @Id
-    @Column
+    @Column(name = "SUB_TASK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long subTaskNo;
+    private Long id;
     @Column
     private String title;
     @Column
@@ -35,39 +35,40 @@ public class SubTask {
     private LocalDateTime modiDttm;
 
     @ManyToOne
-    @JoinColumn(name = "task_no")
+    @JoinColumn(name = "TASK_ID")
     private Task task;
 
-    @Builder
-    public SubTask(String title, Long orderNo, String cmplYn, String delYn, LocalDateTime rgstDttm,
-                   LocalDateTime modiDttm, Task task) {
-        this.title = title;
-        this.orderNo = orderNo;
-        this.cmplYn = cmplYn;
-        this.delYn = delYn;
-        this.rgstDttm = rgstDttm;
-        this.modiDttm = modiDttm;
-        this.task = task;
+    private LocalDateTime registDateTime() {
+        return LocalDateTime.now();
     }
 
-    public void setRgstDttm(LocalDateTime rgstDttm) {
-        this.rgstDttm = rgstDttm;
+    private LocalDateTime updateDateTime() {
+        return LocalDateTime.now();
     }
 
     public void setModiDttm(LocalDateTime modiDttm) {
         this.modiDttm = modiDttm;
     }
 
-    public void setTask(Task task) {
+    @Builder
+    public SubTask(String title, Long orderNo, Task task) {
+        this.title = title;
+        this.orderNo = orderNo;
+        this.cmplYn = "N";
+        this.delYn = "N";
         this.task = task;
+        this.rgstDttm = registDateTime();
+        this.modiDttm = updateDateTime();
     }
 
-    public void update(SubTask subTask) {
-        this.title = subTask.getTitle();
-        this.orderNo = subTask.getOrderNo();
-        this.cmplYn = subTask.getCmplYn();
-        this.delYn = subTask.getDelYn();
-        this.modiDttm = LocalDateTime.now();
+    public void modifyTitle(String title) {
+        this.title = title;
+        this.modiDttm = updateDateTime();
+    }
+
+    public void modifyOrderNo(Long orderNo) {
+        this.orderNo= orderNo;
+        this.modiDttm = updateDateTime();
     }
 
 }

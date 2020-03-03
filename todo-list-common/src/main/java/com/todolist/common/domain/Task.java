@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 public class Task {
 
     @Id
-    @Column
+    @Column(name = "TASK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long taskNo;
+    private Long id;
     @Column
     private String title;
     @Column
@@ -41,51 +41,42 @@ public class Task {
     @UpdateTimestamp
     private LocalDateTime modiDttm;
 
-    @ManyToOne
-    @JoinColumn(name = "group_no")
-    private Groups groups;
 
     @Builder
-    public Task(String title, String memo, Long orderNo, String cmplYn, String delYn, LocalDateTime startDttm,
-                LocalDateTime endDttm, LocalDateTime rgstDttm, LocalDateTime modiDttm, Groups groups) {
+    public Task(String title, String memo, Long orderNo, LocalDateTime startDttm, LocalDateTime endDttm) {
         this.title = title;
         this.memo = memo;
         this.orderNo = orderNo;
-        this.cmplYn = cmplYn;
-        this.delYn = delYn;
+        this.cmplYn = "N";
+        this.delYn = "N";
         this.startDttm = startDttm;
         this.endDttm = endDttm;
-        this.rgstDttm = rgstDttm;
-        this.modiDttm = modiDttm;
-        this.groups = groups;
+        this.rgstDttm = registDateTime();
+        this.modiDttm = updateDateTime();
     }
 
-    public void setStartDttm(LocalDateTime startDttm) {
-        this.startDttm = startDttm;
+
+    private LocalDateTime registDateTime() {
+        return LocalDateTime.now();
     }
 
-    public void setEndDttm(LocalDateTime endDttm) {
-        this.endDttm = endDttm;
+    private LocalDateTime updateDateTime() {
+        return LocalDateTime.now();
     }
 
-    public void setModiDttm(LocalDateTime modiDttm) {
-        this.modiDttm = modiDttm;
+    public void modifyTitle(String title) {
+        this.title = title;
+        this.modiDttm = updateDateTime();
     }
 
-    public void setGroups(Groups groups) {
-        this.groups = groups;
+    public void modifyMemo(String memo) {
+        this.memo = memo;
+        this.modiDttm = updateDateTime();
     }
 
-    public void update(Task task) {
-        this.title = task.getTitle();
-        this.memo = task.getMemo();
-        this.orderNo = task.getOrderNo();
-        this.cmplYn = task.getCmplYn();
-        this.delYn = task.getDelYn();
-        this.startDttm = task.getStartDttm();
-        this.endDttm = task.getEndDttm();
-        this.modiDttm = LocalDateTime.now();
-        this.groups = task.getGroups();
+    public void modifyOrderNo(Long orderNo) {
+        this.orderNo= orderNo;
+        this.modiDttm = updateDateTime();
     }
 
 }

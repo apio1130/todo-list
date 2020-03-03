@@ -30,8 +30,7 @@ public class TaskRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        IntStream.range(1, 11).forEach(i -> taskRepository.save(Task.builder().title("To-do #" + i)
-                                                                    .cmplYn("N").delYn("N").build()));
+        IntStream.range(1, 11).forEach(i -> taskRepository.save(Task.builder().title("To-do #" + i).build()));
     }
 
     @DisplayName("Task 조회 테스트")
@@ -46,9 +45,9 @@ public class TaskRepositoryTest {
     @DisplayName("Task 등록 테스트")
     @Test
     public void save() {
-        Task savedTask = taskRepository.save(Task.builder().title("등록 테스트").cmplYn("N").delYn("N").build());
+        Task savedTask = taskRepository.save(Task.builder().title("등록 테스트").build());
         log.debug("savedTask > {}", savedTask);
-        Task findTask = taskRepository.findById(savedTask.getTaskNo()).orElse(new Task());
+        Task findTask = taskRepository.findById(savedTask.getId()).orElse(new Task());
         log.debug("findTask > {}", findTask);
         assertThat(savedTask.getTitle(), is("등록 테스트"));
     }
@@ -58,18 +57,11 @@ public class TaskRepositoryTest {
     public void update() {
         Task findTask = taskRepository.findById(1L).orElse(new Task());
         log.debug("findTask > {}", findTask);
-        findTask.update(Task.builder().title("수정 테스트")
-                .memo(findTask.getMemo())
-                .orderNo(findTask.getOrderNo())
-                .cmplYn("Y")
-                .delYn(findTask.getDelYn())
-                .startDttm(findTask.getStartDttm())
-                .endDttm(findTask.getEndDttm())
-                .build());
+        findTask.modifyTitle("수정 테스트");
         taskRepository.save(findTask);
-        Task updatedTask = taskRepository.findById(findTask.getTaskNo()).orElse(new Task());
+        Task updatedTask = taskRepository.findById(findTask.getId()).orElse(new Task());
         log.debug("updatedTask > {}", updatedTask);
-        assertThat(updatedTask.getTaskNo(), is(findTask.getTaskNo()));
+        assertThat(updatedTask.getId(), is(findTask.getId()));
         assertThat(updatedTask.getTitle(), is(findTask.getTitle()));
     }
 
