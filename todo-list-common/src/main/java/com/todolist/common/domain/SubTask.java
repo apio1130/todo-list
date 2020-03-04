@@ -1,5 +1,6 @@
 package com.todolist.common.domain;
 
+import com.todolist.common.domain.enums.SubTaskStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,26 +20,44 @@ public class SubTask {
     @Column(name = "SUB_TASK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+
+    @Column(name = "TITLE")
     private String title;
-    @Column
+
+    @Column(name = "ORD_NO")
     private Long orderNo;
-    @Column
-    private String cmplYn;
-    @Column
-    private String delYn;
-    @Column(nullable = false)
+
+    @Column(name = "STATUS_CD")
+    @Enumerated(EnumType.STRING)
+    private SubTaskStatus status;
+
+    @Column(name = "DEL_YN")
+    private String deleteYn;
+
+    @Column(name = "CREATE_DTTM", nullable = false)
     @CreationTimestamp
-    private LocalDateTime rgstDttm;
-    @Column(nullable = false)
+    private LocalDateTime createDate;
+
+    @Column(name = "UPDATE_DTTM", nullable = false)
     @UpdateTimestamp
-    private LocalDateTime modiDttm;
+    private LocalDateTime updateDate;
 
     @ManyToOne
     @JoinColumn(name = "TASK_ID")
     private Task task;
 
-    private LocalDateTime registDateTime() {
+    @Builder
+    public SubTask(String title, Long orderNo, Task task) {
+        this.title = title;
+        this.orderNo = orderNo;
+        this.status = SubTaskStatus.READY;
+        this.deleteYn = "N";
+        this.task = task;
+        this.createDate = createDateTime();
+        this.updateDate = updateDateTime();
+    }
+
+    private LocalDateTime createDateTime() {
         return LocalDateTime.now();
     }
 
@@ -46,29 +65,14 @@ public class SubTask {
         return LocalDateTime.now();
     }
 
-    public void setModiDttm(LocalDateTime modiDttm) {
-        this.modiDttm = modiDttm;
-    }
-
-    @Builder
-    public SubTask(String title, Long orderNo, Task task) {
-        this.title = title;
-        this.orderNo = orderNo;
-        this.cmplYn = "N";
-        this.delYn = "N";
-        this.task = task;
-        this.rgstDttm = registDateTime();
-        this.modiDttm = updateDateTime();
-    }
-
     public void modifyTitle(String title) {
         this.title = title;
-        this.modiDttm = updateDateTime();
+        this.updateDate = updateDateTime();
     }
 
     public void modifyOrderNo(Long orderNo) {
         this.orderNo= orderNo;
-        this.modiDttm = updateDateTime();
+        this.updateDate = updateDateTime();
     }
 
 }

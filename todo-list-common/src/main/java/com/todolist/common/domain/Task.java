@@ -1,5 +1,6 @@
 package com.todolist.common.domain;
 
+import com.todolist.common.domain.enums.TaskStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,43 +21,51 @@ public class Task {
     @Column(name = "TASK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
-    private String title;
-    @Column
-    private String memo;
-    @Column
-    private Long orderNo;
-    @Column
-    private String cmplYn;
-    @Column
-    private String delYn;
-    @Column
-    private LocalDateTime startDttm;
-    @Column
-    private LocalDateTime endDttm;
-    @Column(nullable = false)
-    @CreationTimestamp
-    private LocalDateTime rgstDttm;
-    @Column(nullable = false)
-    @UpdateTimestamp
-    private LocalDateTime modiDttm;
 
+    @Column(name = "TITLE")
+    private String title;
+
+    @Column(name = "MEMO")
+    private String memo;
+
+    @Column(name = "STATUS_CD")
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
+    @Column(name = "ORD_NO")
+    private Long orderNo;
+
+    @Column(name = "DEL_YN")
+    private String deleteYn;
+
+    @Column(name = "START_DTTM")
+    private LocalDateTime startDate;
+
+    @Column(name = "END_DTTM")
+    private LocalDateTime endDate;
+
+    @Column(name = "CREATE_DTTM", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createDate;
+
+    @Column(name = "UPDATE_DTTM", nullable = false)
+    @UpdateTimestamp
+    private LocalDateTime updateDate;
 
     @Builder
-    public Task(String title, String memo, Long orderNo, LocalDateTime startDttm, LocalDateTime endDttm) {
+    public Task(String title, String memo, Long orderNo, LocalDateTime startDate, LocalDateTime endDate) {
         this.title = title;
         this.memo = memo;
         this.orderNo = orderNo;
-        this.cmplYn = "N";
-        this.delYn = "N";
-        this.startDttm = startDttm;
-        this.endDttm = endDttm;
-        this.rgstDttm = registDateTime();
-        this.modiDttm = updateDateTime();
+        this.status = TaskStatus.READY;
+        this.deleteYn = "N";
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.createDate = createDateTime();
+        this.updateDate = updateDateTime();
     }
 
-
-    private LocalDateTime registDateTime() {
+    private LocalDateTime createDateTime() {
         return LocalDateTime.now();
     }
 
@@ -66,17 +75,17 @@ public class Task {
 
     public void modifyTitle(String title) {
         this.title = title;
-        this.modiDttm = updateDateTime();
+        this.updateDate = updateDateTime();
     }
 
     public void modifyMemo(String memo) {
         this.memo = memo;
-        this.modiDttm = updateDateTime();
+        this.updateDate = updateDateTime();
     }
 
     public void modifyOrderNo(Long orderNo) {
         this.orderNo= orderNo;
-        this.modiDttm = updateDateTime();
+        this.updateDate = updateDateTime();
     }
 
 }
