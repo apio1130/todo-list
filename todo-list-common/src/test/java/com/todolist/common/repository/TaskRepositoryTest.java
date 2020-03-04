@@ -13,8 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -39,7 +38,8 @@ public class TaskRepositoryTest {
         List<Task> taskList = taskRepository.findAll();
         log.debug("taskList size : {}", taskList.size());
         taskList.forEach(t -> log.debug(t.toString()));
-        assertThat(taskList.size(), is(10));
+
+        assertThat(taskList.size()).isEqualTo(10);
     }
 
     @DisplayName("Task 등록 테스트")
@@ -49,7 +49,8 @@ public class TaskRepositoryTest {
         log.debug("savedTask > {}", savedTask);
         Task findTask = taskRepository.findById(savedTask.getId()).orElse(new Task());
         log.debug("findTask > {}", findTask);
-        assertThat(savedTask.getTitle(), is("등록 테스트"));
+
+        assertThat(savedTask.getTitle()).isEqualTo("등록 테스트");
     }
 
     @DisplayName("Task 수정 테스트")
@@ -61,8 +62,9 @@ public class TaskRepositoryTest {
         taskRepository.save(findTask);
         Task updatedTask = taskRepository.findById(findTask.getId()).orElse(new Task());
         log.debug("updatedTask > {}", updatedTask);
-        assertThat(updatedTask.getId(), is(findTask.getId()));
-        assertThat(updatedTask.getTitle(), is(findTask.getTitle()));
+
+        assertThat(updatedTask.getId()).isEqualTo(findTask.getId());
+        assertThat(updatedTask.getTitle()).isEqualTo(findTask.getTitle());
     }
 
 }

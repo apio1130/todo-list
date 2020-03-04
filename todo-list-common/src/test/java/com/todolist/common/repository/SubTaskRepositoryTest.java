@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -51,8 +50,9 @@ class SubTaskRepositoryTest {
         Task task = taskRepository.findById(1L).orElse(new Task());
         List<SubTask> subTasks = subTaskRepository.findByTask(task);
         subTasks.forEach(s -> log.debug("saved SubTask Info : {}", s));
-        assertThat(subTasks.size(), is(5));
-        assertThat(subTasks.get(0).getTask().getId(), is(task.getId()));
+
+        assertThat(subTasks.size()).isEqualTo(5);
+        assertThat(subTasks.get(0).getTask().getId()).isEqualTo(task.getId());
     }
 
     @DisplayName("Sub Task 등록 테스트")
@@ -67,8 +67,8 @@ class SubTaskRepositoryTest {
         Task findTask = taskRepository.findById(1L).orElse(new Task());
         log.debug("findTask info : {}", findTask);
 
-        assertThat(savedSubTask.getId(), is(findSubTask.getId()));
-        assertThat(findTask.getId(), is(findSubTask.getTask().getId()));
+        assertThat(savedSubTask.getId()).isEqualTo(findSubTask.getId());
+        assertThat(findTask.getId()).isEqualTo(findSubTask.getTask().getId());
     }
 
     @DisplayName("Sub Task 수정 테스트")
@@ -83,7 +83,8 @@ class SubTaskRepositoryTest {
         findSubTask.modifyTitle("변경한 Sub-Task 입니다.");
         SubTask updateSubTask = subTaskRepository.save(findSubTask);
         log.debug("updateSubTask info : {}", updateSubTask);
-        assertThat(updateSubTask.getTitle(), is("변경한 Sub-Task 입니다."));
+
+        assertThat(updateSubTask.getTitle()).isEqualTo("변경한 Sub-Task 입니다.");
     }
 
 }
