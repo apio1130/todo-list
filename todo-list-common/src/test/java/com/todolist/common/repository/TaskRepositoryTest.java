@@ -58,7 +58,8 @@ public class TaskRepositoryTest {
     public void update() {
         Task findTask = taskRepository.findById(1L).orElse(new Task());
         log.debug("findTask > {}", findTask);
-        findTask.modifyTitle("수정 테스트");
+        findTask.modifyTitle("수정 테스트").modifyUpdateDate();
+        log.debug("findTask check > {}", findTask);
         taskRepository.save(findTask);
         Task updatedTask = taskRepository.findById(findTask.getId()).orElse(new Task());
         log.debug("updatedTask > {}", updatedTask);

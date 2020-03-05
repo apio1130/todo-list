@@ -80,7 +80,7 @@ class SubTaskRepositoryTest {
         log.debug("saved SubTask info : {}", savedSubTask);
         SubTask findSubTask = subTaskRepository.findById(savedSubTask.getId()).orElse(new SubTask());
         log.debug("findSubTask info : {}", findSubTask);
-        findSubTask.modifyTitle("변경한 Sub-Task 입니다.");
+        findSubTask.modifyTitle("변경한 Sub-Task 입니다.").modifyUpdateDate();
         SubTask updateSubTask = subTaskRepository.save(findSubTask);
         log.debug("updateSubTask info : {}", updateSubTask);
 

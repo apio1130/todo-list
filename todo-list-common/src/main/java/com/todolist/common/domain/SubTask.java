@@ -1,5 +1,6 @@
 package com.todolist.common.domain;
 
+import com.todolist.common.convert.SubTaskStatusConverter;
 import com.todolist.common.domain.enums.SubTaskStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 public class SubTask {
+
     @Id
     @Column(name = "SUB_TASK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +31,7 @@ public class SubTask {
 
     @Column(name = "STATUS_CD")
     @Enumerated(EnumType.STRING)
+    @Convert(converter = SubTaskStatusConverter.class)
     private SubTaskStatus status;
 
     @Column(name = "DEL_YN")
@@ -53,26 +56,38 @@ public class SubTask {
         this.status = SubTaskStatus.READY;
         this.deleteYn = "N";
         this.task = task;
-        this.createDate = createDateTime();
-        this.updateDate = updateDateTime();
+        this.createDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
     }
 
-    private LocalDateTime createDateTime() {
-        return LocalDateTime.now();
+    public SubTask modifyUpdateDate() {
+        this.updateDate = LocalDateTime.now();
+        return this;
     }
 
-    private LocalDateTime updateDateTime() {
-        return LocalDateTime.now();
-    }
-
-    public void modifyTitle(String title) {
+    public SubTask modifyTitle(String title) {
         this.title = title;
-        this.updateDate = updateDateTime();
+        return this;
     }
 
-    public void modifyOrderNo(Long orderNo) {
-        this.orderNo= orderNo;
-        this.updateDate = updateDateTime();
+    public SubTask modifyOrderNo(Long orderNo) {
+        this.orderNo = orderNo;
+        return this;
+    }
+
+    public SubTask modifyStatus(SubTaskStatus subTaskStatus) {
+        this.status = subTaskStatus;
+        return this;
+    }
+
+    public SubTask modifyTask(Task task) {
+        this.task = task;
+        return this;
+    }
+
+    public SubTask delete() {
+        this.deleteYn = "Y";
+        return this;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.todolist.common.domain;
 
+import com.todolist.common.convert.TaskStatusConverter;
 import com.todolist.common.domain.enums.TaskStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Task {
 
     @Column(name = "STATUS_CD")
     @Enumerated(EnumType.STRING)
+    @Convert(converter = TaskStatusConverter.class)
     private TaskStatus status;
 
     @Column(name = "ORD_NO")
@@ -61,31 +63,45 @@ public class Task {
         this.deleteYn = "N";
         this.startDate = startDate;
         this.endDate = endDate;
-        this.createDate = createDateTime();
-        this.updateDate = updateDateTime();
+        this.createDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
+        ;
     }
 
-    private LocalDateTime createDateTime() {
-        return LocalDateTime.now();
+    public Task modifyUpdateDate() {
+        this.updateDate = LocalDateTime.now();
+        return this;
     }
 
-    private LocalDateTime updateDateTime() {
-        return LocalDateTime.now();
-    }
-
-    public void modifyTitle(String title) {
+    public Task modifyTitle(String title) {
         this.title = title;
-        this.updateDate = updateDateTime();
+        return this;
     }
 
-    public void modifyMemo(String memo) {
+    public Task modifyMemo(String memo) {
         this.memo = memo;
-        this.updateDate = updateDateTime();
+        return this;
     }
 
-    public void modifyOrderNo(Long orderNo) {
-        this.orderNo= orderNo;
-        this.updateDate = updateDateTime();
+    public Task modifyOrderNo(Long orderNo) {
+        this.orderNo = orderNo;
+        return this;
+    }
+
+    public Task modifyStatus(TaskStatus taskStatus) {
+        this.status = taskStatus;
+        return this;
+    }
+
+    public Task modifyPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        return this;
+    }
+
+    public Task delete() {
+        this.deleteYn = "Y";
+        return this;
     }
 
 }

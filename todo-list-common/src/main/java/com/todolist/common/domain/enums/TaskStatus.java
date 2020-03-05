@@ -2,6 +2,8 @@ package com.todolist.common.domain.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum TaskStatus {
     READY("대기", "01"),
@@ -14,5 +16,9 @@ public enum TaskStatus {
     TaskStatus(String desc, String code) {
         this.desc = desc;
         this.code = code;
+    }
+
+    public static TaskStatus findStatus(String statusCode) {
+        return Arrays.stream(TaskStatus.values()).filter(s -> s.getCode().equals(statusCode)).findAny().orElse(null);
     }
 }
