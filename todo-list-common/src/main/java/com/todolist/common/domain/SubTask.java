@@ -60,34 +60,27 @@ public class SubTask {
         this.updateDate = LocalDateTime.now();
     }
 
-    public SubTask modifyUpdateDate() {
-        this.updateDate = LocalDateTime.now();
-        return this;
-    }
-
-    public SubTask modifyTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
-    public SubTask modifyOrderNo(Long orderNo) {
+    public void setOrderNo(Long orderNo) {
         this.orderNo = orderNo;
-        return this;
     }
 
-    public SubTask modifyStatus(SubTaskStatus subTaskStatus) {
-        this.status = subTaskStatus;
-        return this;
+    public void setStatus(SubTaskStatus status) {
+        this.status = status;
     }
 
-    public SubTask modifyTask(Task task) {
+    public void setDeleteYn(String deleteYn) {
+        this.deleteYn = deleteYn;
+    }
+
+    public void setTask(Task task) {
         this.task = task;
-        return this;
     }
 
-    public SubTask delete() {
-        this.deleteYn = "Y";
-        return this;
+    public void updateDateTime() {
+        this.updateDate = LocalDateTime.now();
     }
-
 }

@@ -68,40 +68,36 @@ public class Task {
         ;
     }
 
-    public Task modifyUpdateDate() {
-        this.updateDate = LocalDateTime.now();
-        return this;
-    }
-
-    public Task modifyTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
-    public Task modifyMemo(String memo) {
+    public void setMemo(String memo) {
         this.memo = memo;
-        return this;
     }
 
-    public Task modifyOrderNo(Long orderNo) {
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public void setOrderNo(Long orderNo) {
         this.orderNo = orderNo;
-        return this;
     }
 
-    public Task modifyStatus(TaskStatus taskStatus) {
-        this.status = taskStatus;
-        return this;
+    public void setDeleteYn(String deleteYn) {
+        this.deleteYn = deleteYn;
     }
 
-    public Task modifyPeriod(LocalDateTime startDate, LocalDateTime endDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
-        this.endDate = endDate;
-        return this;
     }
 
-    public Task delete() {
-        this.deleteYn = "Y";
-        return this;
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public void updateDateTime() {
+        this.updateDate = LocalDateTime.now();
     }
 
 }
