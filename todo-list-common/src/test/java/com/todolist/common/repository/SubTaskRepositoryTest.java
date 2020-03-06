@@ -74,7 +74,7 @@ class SubTaskRepositoryTest {
     @DisplayName("Sub Task 수정 테스트")
     @Test
     void update() {
-        Task task = taskRepository.findById(1L).orElse(new Task());
+        Task task = taskRepository.findAll().get(0);
         log.debug("task info : {}", task);
         SubTask savedSubTask = subTaskRepository.save(SubTask.builder().title("Sub-Task 입니다.").task(task).build());
         log.debug("saved SubTask info : {}", savedSubTask);

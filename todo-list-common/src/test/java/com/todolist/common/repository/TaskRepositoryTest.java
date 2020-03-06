@@ -56,7 +56,8 @@ public class TaskRepositoryTest {
     @DisplayName("Task 수정 테스트")
     @Test
     public void update() {
-        Task findTask = taskRepository.findById(1L).orElse(new Task());
+        List<Task> taskList = taskRepository.findAll();
+        Task findTask = taskList.get(0);
         log.debug("findTask > {}", findTask);
         findTask.setTitle("수정 테스트");
         findTask.updateDateTime();
