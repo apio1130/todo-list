@@ -1,5 +1,31 @@
+apply plugin: "com.moowork.node"
+
+node {
+    version = '12.11.1'
+    npmVersion = '6.13.4'
+    download = false
+    // npm, node 설치파일 저장 디렉토리 명시
+    // workDir = file("./src/front")  // node
+    // npmWorkDir = file("./src/front") // npm
+    nodeModulesDir = file("./src/front")
+}
+
+task setUp(type: NpmTask) {
+    description = "Install Node.js package"
+    args = ['install']
+    inputs.files file('package.json')
+    outputs.files file('node_modules')
+}
+
+task buildFront(type: NpmTask, dependsOn: setUp) {
+    description = "Build vue.js"
+    args = ['run', 'build']
+}
+
+processResources.dependsOn 'buildFront'
+
 dependencies {
     implementation project(':todo-list-common')
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }

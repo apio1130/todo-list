@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -35,13 +34,12 @@ class SubTaskRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        Task savedTask = taskRepository.save(Task.builder().title("To-do #1").cmplYn("N").delYn("N").build());
+        Task savedTask = taskRepository.save(Task.builder().title("To-do #1").build());
         log.debug("insert Task Info : {}", savedTask);
 
         // savedTask
         List<SubTask> subTasks = new ArrayList<>();
-        IntStream.range(1, 6).forEach(i -> subTasks.add(SubTask.builder().title("Sub-Task #" + i + " 입니다.")
-                                                               .cmplYn("N").delYn("N").task(savedTask).build()));
+        IntStream.range(1, 6).forEach(i -> subTasks.add(SubTask.builder().title("Sub-Task #" + i + " 입니다.").task(savedTask).build()));
         List<SubTask> savedSubTasks = subTaskRepository.saveAll(subTasks);
         savedSubTasks.forEach(s -> log.debug("saved SubTask Info : {}", s));
     }
@@ -52,8 +50,9 @@ class SubTaskRepositoryTest {
         Task task = taskRepository.findById(1L).orElse(new Task());
         List<SubTask> subTasks = subTaskRepository.findByTask(task);
         subTasks.forEach(s -> log.debug("saved SubTask Info : {}", s));
-        assertThat(subTasks.size(), is(5));
-        assertThat(subTasks.get(0).getTask().getTaskNo(), is(task.getTaskNo()));
+
+        assertThat(subTasks.size()).isEqualTo(5);
+        assertThat(subTasks.get(0).getTask().getId()).isEqualTo(task.getId());
     }
 
     @DisplayName("Sub Task 등록 테스트")
@@ -61,34 +60,32 @@ class SubTaskRepositoryTest {
     void save() {
         Task task = taskRepository.findById(1L).orElse(new Task());
         log.debug("task info : {}", task);
-        SubTask savedSubTask = subTaskRepository.save(SubTask.builder().title("Sub-Task 입니다.").cmplYn("N")
-                                                                       .delYn("N").task(task).build());
+        SubTask savedSubTask = subTaskRepository.save(SubTask.builder().title("Sub-Task 입니다.").task(task).build());
         log.debug("saved SubTask info : {}", savedSubTask);
-        SubTask findSubTask = subTaskRepository.findById(savedSubTask.getSubTaskNo()).orElse(new SubTask());
+        SubTask findSubTask = subTaskRepository.findById(savedSubTask.getId()).orElse(new SubTask());
         log.debug("find SubTask info : {}", findSubTask);
         Task findTask = taskRepository.findById(1L).orElse(new Task());
         log.debug("findTask info : {}", findTask);
 
-        assertThat(savedSubTask.getSubTaskNo(), is(findSubTask.getSubTaskNo()));
-        assertThat(findTask.getTaskNo(), is(findSubTask.getTask().getTaskNo()));
+        assertThat(savedSubTask.getId()).isEqualTo(findSubTask.getId());
+        assertThat(findTask.getId()).isEqualTo(findSubTask.getTask().getId());
     }
 
     @DisplayName("Sub Task 수정 테스트")
     @Test
     void update() {
-        Task task = taskRepository.findById(1L).orElse(new Task());
+        Task task = taskRepository.findAll().get(0);
         log.debug("task info : {}", task);
-        SubTask savedSubTask = subTaskRepository.save(SubTask.builder().title("Sub-Task 입니다.").cmplYn("N")
-                .delYn("N").task(task).build());
+        SubTask savedSubTask = subTaskRepository.save(SubTask.builder().title("Sub-Task 입니다.").task(task).build());
         log.debug("saved SubTask info : {}", savedSubTask);
-        SubTask findSubTask = subTaskRepository.findById(savedSubTask.getSubTaskNo()).orElse(new SubTask());
+        SubTask findSubTask = subTaskRepository.findById(savedSubTask.getId()).orElse(new SubTask());
         log.debug("findSubTask info : {}", findSubTask);
-        findSubTask.update(SubTask.builder().title("변경한 Sub-Task 입니다.").cmplYn("Y")
-                                            .delYn(savedSubTask.getDelYn()).task(savedSubTask.getTask()).build());
+        findSubTask.setTitle("변경한 Sub-Task 입니다.");
+        findSubTask.updateDateTime();
         SubTask updateSubTask = subTaskRepository.save(findSubTask);
         log.debug("updateSubTask info : {}", updateSubTask);
-        assertThat(updateSubTask.getTitle(), is("변경한 Sub-Task 입니다."));
-        assertThat(updateSubTask.getCmplYn(), is("Y"));
+
+        assertThat(updateSubTask.getTitle()).isEqualTo("변경한 Sub-Task 입니다.");
     }
 
 }

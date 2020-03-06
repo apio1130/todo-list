@@ -1,5 +1,7 @@
 package com.todolist.common.domain;
 
+import com.todolist.common.convert.TaskStatusConverter;
+import com.todolist.common.domain.enums.TaskStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,75 +19,85 @@ import java.time.LocalDateTime;
 public class Task {
 
     @Id
-    @Column
+    @Column(name = "TASK_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long taskNo;
-    @Column
-    private String title;
-    @Column
-    private String memo;
-    @Column
-    private Long orderNo;
-    @Column
-    private String cmplYn;
-    @Column
-    private String delYn;
-    @Column
-    private LocalDateTime startDttm;
-    @Column
-    private LocalDateTime endDttm;
-    @Column(nullable = false)
-    @CreationTimestamp
-    private LocalDateTime rgstDttm;
-    @Column(nullable = false)
-    @UpdateTimestamp
-    private LocalDateTime modiDttm;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "group_no")
-    private Groups groups;
+    @Column(name = "TITLE")
+    private String title;
+
+    @Column(name = "MEMO")
+    private String memo;
+
+    @Column(name = "STATUS_CD")
+    @Enumerated(EnumType.STRING)
+    @Convert(converter = TaskStatusConverter.class)
+    private TaskStatus status;
+
+    @Column(name = "ORD_NO")
+    private Long orderNo;
+
+    @Column(name = "DEL_YN")
+    private String deleteYn;
+
+    @Column(name = "START_DTTM")
+    private LocalDateTime startDate;
+
+    @Column(name = "END_DTTM")
+    private LocalDateTime endDate;
+
+    @Column(name = "CREATE_DTTM", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createDate;
+
+    @Column(name = "UPDATE_DTTM", nullable = false)
+    @UpdateTimestamp
+    private LocalDateTime updateDate;
 
     @Builder
-    public Task(String title, String memo, Long orderNo, String cmplYn, String delYn, LocalDateTime startDttm,
-                LocalDateTime endDttm, LocalDateTime rgstDttm, LocalDateTime modiDttm, Groups groups) {
+    public Task(String title, String memo, Long orderNo, LocalDateTime startDate, LocalDateTime endDate) {
         this.title = title;
         this.memo = memo;
         this.orderNo = orderNo;
-        this.cmplYn = cmplYn;
-        this.delYn = delYn;
-        this.startDttm = startDttm;
-        this.endDttm = endDttm;
-        this.rgstDttm = rgstDttm;
-        this.modiDttm = modiDttm;
-        this.groups = groups;
+        this.status = TaskStatus.READY;
+        this.deleteYn = "N";
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.createDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
+        ;
     }
 
-    public void setStartDttm(LocalDateTime startDttm) {
-        this.startDttm = startDttm;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setEndDttm(LocalDateTime endDttm) {
-        this.endDttm = endDttm;
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
-    public void setModiDttm(LocalDateTime modiDttm) {
-        this.modiDttm = modiDttm;
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
-    public void setGroups(Groups groups) {
-        this.groups = groups;
+    public void setOrderNo(Long orderNo) {
+        this.orderNo = orderNo;
     }
 
-    public void update(Task task) {
-        this.title = task.getTitle();
-        this.memo = task.getMemo();
-        this.orderNo = task.getOrderNo();
-        this.cmplYn = task.getCmplYn();
-        this.delYn = task.getDelYn();
-        this.startDttm = task.getStartDttm();
-        this.endDttm = task.getEndDttm();
-        this.modiDttm = LocalDateTime.now();
-        this.groups = task.getGroups();
+    public void setDeleteYn(String deleteYn) {
+        this.deleteYn = deleteYn;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public void updateDateTime() {
+        this.updateDate = LocalDateTime.now();
     }
 
 }

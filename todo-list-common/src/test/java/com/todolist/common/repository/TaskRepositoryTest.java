@@ -13,8 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
@@ -30,8 +29,7 @@ public class TaskRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        IntStream.range(1, 11).forEach(i -> taskRepository.save(Task.builder().title("To-do #" + i)
-                                                                    .cmplYn("N").delYn("N").build()));
+        IntStream.range(1, 11).forEach(i -> taskRepository.save(Task.builder().title("To-do #" + i).build()));
     }
 
     @DisplayName("Task 조회 테스트")
@@ -40,37 +38,36 @@ public class TaskRepositoryTest {
         List<Task> taskList = taskRepository.findAll();
         log.debug("taskList size : {}", taskList.size());
         taskList.forEach(t -> log.debug(t.toString()));
-        assertThat(taskList.size(), is(10));
+
+        assertThat(taskList.size()).isEqualTo(10);
     }
 
     @DisplayName("Task 등록 테스트")
     @Test
     public void save() {
-        Task savedTask = taskRepository.save(Task.builder().title("등록 테스트").cmplYn("N").delYn("N").build());
+        Task savedTask = taskRepository.save(Task.builder().title("등록 테스트").build());
         log.debug("savedTask > {}", savedTask);
-        Task findTask = taskRepository.findById(savedTask.getTaskNo()).orElse(new Task());
+        Task findTask = taskRepository.findById(savedTask.getId()).orElse(new Task());
         log.debug("findTask > {}", findTask);
-        assertThat(savedTask.getTitle(), is("등록 테스트"));
+
+        assertThat(savedTask.getTitle()).isEqualTo("등록 테스트");
     }
 
     @DisplayName("Task 수정 테스트")
     @Test
     public void update() {
-        Task findTask = taskRepository.findById(1L).orElse(new Task());
+        List<Task> taskList = taskRepository.findAll();
+        Task findTask = taskList.get(0);
         log.debug("findTask > {}", findTask);
-        findTask.update(Task.builder().title("수정 테스트")
-                .memo(findTask.getMemo())
-                .orderNo(findTask.getOrderNo())
-                .cmplYn("Y")
-                .delYn(findTask.getDelYn())
-                .startDttm(findTask.getStartDttm())
-                .endDttm(findTask.getEndDttm())
-                .build());
+        findTask.setTitle("수정 테스트");
+        findTask.updateDateTime();
+        log.debug("findTask check > {}", findTask);
         taskRepository.save(findTask);
-        Task updatedTask = taskRepository.findById(findTask.getTaskNo()).orElse(new Task());
+        Task updatedTask = taskRepository.findById(findTask.getId()).orElse(new Task());
         log.debug("updatedTask > {}", updatedTask);
-        assertThat(updatedTask.getTaskNo(), is(findTask.getTaskNo()));
-        assertThat(updatedTask.getTitle(), is(findTask.getTitle()));
+
+        assertThat(updatedTask.getId()).isEqualTo(findTask.getId());
+        assertThat(updatedTask.getTitle()).isEqualTo(findTask.getTitle());
     }
 
 }

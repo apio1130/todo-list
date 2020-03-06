@@ -1,9 +1,14 @@
+# common
 spring:
   profiles: 
     active: local
+
 ---
+# local
 spring:
   profiles: local
+  jpa:
+    show-sql: true
 server:
     port: 9000
 logging:
@@ -11,6 +16,7 @@ logging:
     com.todolist: debug
 
 ---
+# test
 spring:
   profiles: test
 logging:
@@ -18,6 +24,7 @@ logging:
     com.todolist: info
 
 ---
+# prd
 spring:
   profiles: prd
 logging:
