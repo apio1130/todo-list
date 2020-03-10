@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -22,4 +23,7 @@ public class TaskService {
         return taskRepository.save(Task.builder().title(taskName).build());
     }
 
+    public List<Task> retrieveList() {
+        return taskRepository.findAll();
+    }
 }
